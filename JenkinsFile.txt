@@ -1,0 +1,50 @@
+pipeline {
+    agent any
+
+    // Load secrets from Jenkins credentials
+    environment {
+        TWILIO_SID        = credentials('TWILIO_SID')
+        TWILIO_AUTH_TOKEN = credentials('TWILIO_AUTH_TOKEN')
+        TWILIO_PHONE      = credentials('TWILIO_PHONE')
+        USER_PHONE        = credentials('USER_PHONE')
+        FEEDS             = credentials('FEEDS')
+        MAX_HEADLINES     = credentials('MAX_HEADLINES')
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout the main branch
+                git branch: 'main', url: 'https://github.com/Varshithakorepu/DevOps_project.git'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                // Navigate into your project folder
+                dir('offline-news-sms-bot') {
+                    echo "Installing Python dependencies..."
+                    bat 'pip install -r requirements.txt'
+                }
+            }
+        }
+
+        stage('Run Application') {
+            steps {
+                dir('offline-news-sms-bot') {
+                    echo "Running offline-news-sms-bot..."
+                    bat 'python app.py'
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo "✅ Build and run succeeded!"
+        }
+        failure {
+            echo "❌ Build failed. Check logs for errors."
+        }
+    }
+}
