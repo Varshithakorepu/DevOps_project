@@ -35,7 +35,7 @@ for url in feeds:
         print(f" Error parsing {url}: {e}")
 
 if not headlines:
-    headlines = ["No news available"]
+    headlines = ["No news available and Error"]
 
 message_body = "Top News:\n" + "\n".join([f"- {h}" for h in headlines])
 
