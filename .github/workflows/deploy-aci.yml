@@ -40,5 +40,4 @@ jobs:
             --memory 1 \
             --ports 8081 \
             --ip-address Public \
-            --location southeastasia \
             --restart-policy Always
