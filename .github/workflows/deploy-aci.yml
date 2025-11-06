@@ -43,6 +43,7 @@ jobs:
             --name devops-container \
             --image ${{ secrets.DOCKERHUB_USERNAME }}/devops_project:latest \
             --location eastus \
+            --os-type Linux \
             --cpu 1 \
             --memory 1 \
             --ports 8081 \
