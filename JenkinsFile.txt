@@ -1,5 +1,5 @@
 pipeline {
-    agent any
+    agent {label 'win'}
 
     // Load secrets from Jenkins credentials
     environment {
@@ -33,7 +33,7 @@ pipeline {
             steps {
                 dir('offline-news-sms-bot') {
                     echo "Running offline-news-sms-bot..."
-                    bat 'python app.py'
+                    bat 'python send_daily.py'
                 }
             }
         }

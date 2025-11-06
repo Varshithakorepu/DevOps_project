@@ -1,3 +1,7 @@
+# -*- coding: utf-8 -*-
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
+
 import os
 from twilio.rest import Client
 import feedparser
@@ -31,7 +35,7 @@ for url in feeds:
         print(f" Error parsing {url}: {e}")
 
 if not headlines:
-    headlines = ["No news available"]
+    headlines = ["No news available and Error"]
 
 message_body = "Top News:\n" + "\n".join([f"- {h}" for h in headlines])
 
@@ -59,4 +63,4 @@ message = client.messages.create(
     to=user_phone
 )
 
-print(f"SMS sent! SID: {message.sid}")
+print(f"SMS sent!!! SID: {message.sid}")
