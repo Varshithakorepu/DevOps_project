@@ -38,7 +38,11 @@ jobs:
       # Step 6: Deploy to Azure Container Instance
       - name: Deploy to Azure Container Instance
         run: |
-          az container create \
+            az container delete \
+            --resource-group devops-project-rg \
+            --name devops-container \
+            --yes || true
+            az container create \
             --resource-group devops-project-rg \
             --name devops-container \
             --image ${{ secrets.DOCKERHUB_USERNAME }}/devops_project:latest \
@@ -49,15 +53,6 @@ jobs:
             --ports 8081 \
             --ip-address Public \
             --restart-policy Always \
-            az container create \
-            --resource-group project6-rg \
-            --name project6-instance \
-            --image ${{ secrets.DOCKERHUB_USERNAME }}/project6:latest \
-            --dns-name-label project6-demo123 \
-            --ports 8080 \
-            --os-type Linux \
-            --cpu 1 \
-            --memory 1 \
             --registry-login-server index.docker.io \
             --registry-username ${{ secrets.DOCKERHUB_USERNAME }} \
             --registry-password ${{ secrets.DOCKERHUB_PASSWORD }} \
