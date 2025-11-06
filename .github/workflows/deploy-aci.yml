@@ -49,6 +49,18 @@ jobs:
             --ports 8081 \
             --ip-address Public \
             --restart-policy Always \
+            az container create \
+            --resource-group project6-rg \
+            --name project6-instance \
+            --image ${{ secrets.DOCKERHUB_USERNAME }}/project6:latest \
+            --dns-name-label project6-demo123 \
+            --ports 8080 \
+            --os-type Linux \
+            --cpu 1 \
+            --memory 1 \
+            --registry-login-server index.docker.io \
+            --registry-username ${{ secrets.DOCKERHUB_USERNAME }} \
+            --registry-password ${{ secrets.DOCKERHUB_PASSWORD }} \
             --environment-variables \
               TWILIO_SID=${{ secrets.TWILIO_SID }} \
               TWILIO_AUTH_TOKEN=${{ secrets.TWILIO_AUTH_TOKEN }} \
