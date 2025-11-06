@@ -10,34 +10,48 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout code
       - name: Checkout code
         uses: actions/checkout@v3
 
+      # Step 2: Log in to Docker Hub
       - name: Log in to Docker Hub
         run: |
           echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
+      # Step 3: Build Docker image
       - name: Build Docker image
         run: |
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/devops_project:latest .
 
+      # Step 4: Push Docker image to Docker Hub
       - name: Push Docker image to Docker Hub
         run: |
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/devops_project:latest
 
+      # Step 5: Log in to Azure
       - name: Log in to Azure
         uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+      # Step 6: Deploy to Azure Container Instance
       - name: Deploy to Azure Container Instance
         run: |
           az container create \
-            --resource-group devops_project-rg \
+            --resource-group devops-project-rg \
             --name devops-container \
             --image ${{ secrets.DOCKERHUB_USERNAME }}/devops_project:latest \
+            --location eastus \
             --cpu 1 \
             --memory 1 \
             --ports 8081 \
             --ip-address Public \
-            --restart-policy Always
+            --restart-policy Always \
+            --environment-variables \
+              TWILIO_SID=${{ secrets.TWILIO_SID }} \
+              TWILIO_AUTH_TOKEN=${{ secrets.TWILIO_AUTH_TOKEN }} \
+              TWILIO_PHONE=${{ secrets.TWILIO_PHONE }} \
+              USER_PHONE=${{ secrets.USER_PHONE }} \
+              FEEDS="https://news.google.com/rss/search?q=Telangana&hl=te&gl=IN&ceid=IN:te" \
+              MAX_HEADLINES=5
