@@ -40,5 +40,5 @@ jobs:
             --memory 1 \
             --ports 8081 \
             --ip-address Public \
-            --location eastus \
+            --location centralus \
             --restart-policy Always
