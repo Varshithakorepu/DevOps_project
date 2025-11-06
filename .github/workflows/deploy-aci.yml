@@ -40,5 +40,5 @@ jobs:
             --memory 1 \
             --ports 8081 \
             --ip-address Public \
-            --location southcentralus \
+            --location westus3 \
             --restart-policy Always
