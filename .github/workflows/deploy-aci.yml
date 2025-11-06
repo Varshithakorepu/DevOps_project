@@ -43,5 +43,5 @@ jobs:
           name: devops-container
           image: ${{ secrets.DOCKERHUB_USERNAME }}/devops_project:latest
           dns-name-label: devopsnewsbot
-          location: southeastasia
+          location: westeurope
           ports: 8081
